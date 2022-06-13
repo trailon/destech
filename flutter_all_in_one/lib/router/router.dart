@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_all_in_one/pages/viewbook.dart';
+import 'package:flutter_all_in_one/router/router.gr.dart';
 
-import '../pages/loginscreen.dart';
+import '../pages/homescreen.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -40,8 +42,11 @@ import '../pages/loginscreen.dart';
     ), */
     //userDataRoutes,
     // auth
-    AutoRoute(page: LoginPage, path: '/login', name: "login", initial: true),
+
+    AutoRoute(page: HomeScreen, path: '/home', name: "home", initial: true),
+    AutoRoute(
+        page: ViewBook, path: '/viewbook:book', name: "viewbook", initial: false),
     RedirectRoute(path: '*', redirectTo: '/'),
   ],
 )
-class $AppRouter {}
+class $RootRouter extends RootRouter {}

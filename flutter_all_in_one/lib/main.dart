@@ -1,56 +1,73 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_all_in_one/cubit/materialappcubit.dart';
+import 'package:flutter_all_in_one/router/router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if(!preferences.containsKey('favorites')){
+    preferences.setStringList('favorites', []);
+  }
+  BlocOverrides.runZoned(
+    () => runApp(const MaterialAppProvider()),
+    blocObserver: AppBlocObserver(),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MaterialAppProvider extends StatelessWidget {
+  const MaterialAppProvider({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-          pageTransitionsTheme: const PageTransitionsTheme(builders: {
-        TargetPlatform.iOS: NoShadowCupertinoPageTransitionsBuilder(),
-        TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-      })),
-      /* routerDelegate: _rootRouter.delegate(
-        initialDeepLink: '/profile/my-books',
-        navigatorObservers: () => [AutoRouteObserver()],
-      ),
-      routeInformationProvider: _rootRouter.routeInfoProvider(),
-      routeInformationParser: _rootRouter.defaultRouteParser(), */
+    return BlocProvider(
+      create: (_) => MaterialAppCubit(),
+      child: MyApp(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
+  final _appRouter = $RootRouter();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [],
-          ),
-        ));
+    return BlocBuilder<MaterialAppCubit, ThemeData>(
+      builder: (_, theme) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: theme,
+          builder: EasyLoading.init(),
+          routerDelegate: _appRouter.delegate(
+              initialDeepLink: '/home',
+              navigatorObservers: () => [AutoRouterObserver()]),
+          routeInformationProvider: _appRouter.routeInfoProvider(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
+        );
+      },
+    );
+  }
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    if (bloc is Cubit) {
+      if (kDebugMode) {
+        print(change);
+      }
+    }
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    if (kDebugMode) {
+      print(transition);
+    }
   }
 }
