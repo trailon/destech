@@ -40,7 +40,7 @@ class BookCard extends StatelessWidget {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
         child: ListTile(
-          minLeadingWidth: 140,
+          minLeadingWidth: (kIsWeb) ? MQ.w(context) * 0.075 : null,
           onTap: () {
             context.router.pushWidget(ViewBook(book: book));
           },
