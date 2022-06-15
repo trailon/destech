@@ -156,8 +156,8 @@ class BookPoster extends StatelessWidget {
                   Color.fromARGB(255, 77, 47, 47),
                   Color.fromARGB(153, 147, 67, 55)
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
               ),
             ),
             child: Column(
