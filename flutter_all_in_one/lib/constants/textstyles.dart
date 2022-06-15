@@ -16,7 +16,7 @@ class TextStyles {
         fontWeight: FontWeight.w300,
       );
   static content(BuildContext context) => TextStyle(
-        fontSize: MQ.ar(context) * 30,
+        fontSize: MQ.ar(context) * 35,
         fontWeight: FontWeight.normal,
       );
   static custom(
@@ -24,7 +24,6 @@ class TextStyles {
           double size = 30,
           FontWeight weight = FontWeight.normal}) =>
       TextStyle(
-        fontSize: MQ.ar(context) * ((kIsWeb) ? size / 2 : size),
-        fontWeight: weight,
-      );
+          fontSize: MQ.ar(context) * ((kIsWeb) ? size / 2 : size),
+          fontWeight: weight);
 }

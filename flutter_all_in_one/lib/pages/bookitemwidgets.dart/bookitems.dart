@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_all_in_one/constants/responsivity.dart';
 import 'package:flutter_all_in_one/constants/textstyles.dart';
+import 'package:flutter_all_in_one/constants/utilitywidgets.dart';
 import 'package:flutter_all_in_one/models/booklistmodel.dart';
 import 'package:flutter_all_in_one/pages/viewbook.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -44,19 +45,46 @@ class BookCard extends StatelessWidget {
           onTap: () {
             context.router.pushWidget(ViewBook(book: book));
           },
-          leading:
-              (kIsWeb) ? transformCardImage(child: fadeInImage) : fadeInImage,
+          leading: (kIsWeb)
+              ? transformCardImage(child: fadeInImage)
+              : CircleAvatar(
+                  radius: 30,
+                  backgroundImage: Image.network(book.image!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset('lib/assets/images/placeholder.jpg'))
+                      .image),
           title: AutoSizeText(book.title!,
               style: TextStyles.custom(
                   context: context, size: 35, weight: FontWeight.bold)),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              AutoSizeText("Author: ${book.author!}",
+              UtilityWidgets.textWithIcon(
+                  icon: Icons.person_pin,
+                  text: "Author: ${book.author!}",
+                  /* iconcolor: Theme.of(context).brightness == Brightness.dark
+                      ? null
+                      : Colors.red.shade200, */
                   style: TextStyles.custom(
-                      context: context, size: 35, weight: FontWeight.w400)),
-              AutoSizeText("Genre: ${book.genre!}"),
-              AutoSizeText("Published: ${book.published!}", maxLines: 1),
+                      context: context, size: 30, weight: FontWeight.w400)),
+              UtilityWidgets.textWithIcon(
+                  icon: Icons.book,
+                  text: "Genre: ${book.genre!}",
+                  /* iconcolor: Theme.of(context).brightness == Brightness.dark
+                      ? null
+                      : Colors.brown.shade400, */
+                  style: TextStyles.custom(
+                      context: context, size: 30, weight: FontWeight.w400)),
+              UtilityWidgets.textWithIcon(
+                  icon: Icons.date_range,
+                  text: "Published: ${book.published!}",
+                  /* iconcolor: Theme.of(context).brightness == Brightness.dark
+                      ? null
+                      : Colors.red.shade300, */
+                  style: TextStyles.custom(
+                      context: context, size: 30, weight: FontWeight.w400),
+                  maxLine: 1),
             ],
           ),
           trailing: (icon == Icons.add)
@@ -115,36 +143,71 @@ class BookPoster extends StatelessWidget {
           elevation: 3,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            children: [
-              AutoSizeText(book.title!,
-                  style: TextStyles.title(context), maxLines: 1),
-              FadeInImage(
-                image: NetworkImage(book.image!, scale: 2),
-                placeholder:
-                    const AssetImage('lib/assets/images/placeholder.jpg'),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0XFFEEA29A), width: 2.5),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16)),
+              gradient: const LinearGradient(
+                stops: [0.05, 0.1, 1.0],
+                colors: [
+                  Color.fromARGB(255, 85, 58, 52),
+                  Color.fromARGB(255, 77, 47, 47),
+                  Color.fromARGB(153, 147, 67, 55)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
               ),
-              AutoSizeText(book.author!,
-                  style: TextStyles.subtitle(context), maxLines: 1),
-              (kIsWeb)
-                  ? Column(
-                      children: [
-                        AutoSizeText("Genre: ${book.genre!}",
-                            style: TextStyles.info(context), maxLines: 1),
-                        AutoSizeText("Published: ${book.published!}",
-                            style: TextStyles.info(context), maxLines: 1)
-                      ],
+            ),
+            child: Column(
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  AutoSizeText(book.title!,
+                      style: TextStyles.title(context), maxLines: 1),
+                  Icon(Icons.bookmark, color: Colors.red.shade100)
+                ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: MQ.w(context) * 0.05),
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16)),
+                        child: FadeInImage(
+                          fit: BoxFit.contain,
+                          image: NetworkImage(book.image!, scale: 2),
+                          placeholder: Image.asset(
+                                  'lib/assets/images/placeholder.jpg',
+                                  fit: BoxFit.contain)
+                              .image,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: MQ.w(context) * 0.05),
+                      child: Icon(
+                        Icons.radio_button_checked,
+                        color: Colors.grey.shade200,
+                      ),
                     )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        AutoSizeText("Published: ${book.published!}",
-                            style: TextStyles.info(context), maxLines: 1),
-                        AutoSizeText("Genre: ${book.genre!}",
-                            style: TextStyles.info(context), maxLines: 1)
-                      ],
-                    )
-            ],
+                  ],
+                ),
+                AutoSizeText(book.author!,
+                    style: TextStyles.subtitle(context), maxLines: 1),
+                Column(
+                  children: [
+                    AutoSizeText("Genre: ${book.genre!}",
+                        style: TextStyles.info(context), maxLines: 1),
+                    AutoSizeText("Published: ${book.published!}",
+                        style: TextStyles.info(context), maxLines: 1)
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

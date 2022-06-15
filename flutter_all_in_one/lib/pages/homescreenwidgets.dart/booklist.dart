@@ -2,9 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_all_in_one/bloc/booklist_bloc.dart';
-import 'package:flutter_all_in_one/constants/responsivity.dart';
 import 'package:flutter_all_in_one/constants/skeletons.dart';
-import 'package:flutter_all_in_one/constants/textstyles.dart';
 import 'package:flutter_all_in_one/pages/bookitemwidgets.dart/bookitems.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -79,14 +77,24 @@ class BookListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
+      child: ListView.builder(
+        itemCount: state.bookListModel.data!.length,
         shrinkWrap: true,
         physics: const ScrollPhysics(),
-        children: state.bookListModel.data!.map((book) {
+        itemBuilder: (context, index) {
+          // The image in the URL is changing by the parameter of millisecond of date time stamp
+          // When I get the imageUrl from the postman it has a stable millisecond date time stamp so image is not changing in every list tile
+          // So I am using the item index to change the time stamp of the imageUrl to change image in every list tile
+          String imageUrl = state.bookListModel.data!.elementAt(index).image!;
+          state.bookListModel.data!.elementAt(index).image =
+              "$imageUrl${DateTime.now().timeZoneOffset.inMilliseconds + index}";
           return listingType == 0
-              ? BookCard(book: book,icon: Icons.add,)
-              : BookPoster(book: book);
-        }).toList(),
+              ? BookCard(
+                  book: state.bookListModel.data!.elementAt(index),
+                  icon: Icons.add
+                )
+              : BookPoster(book: state.bookListModel.data!.elementAt(index));
+        },
       ),
     );
   }
