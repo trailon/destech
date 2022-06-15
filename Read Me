@@ -1,0 +1,22 @@
+Merhabalar,
+  Projede favoriler bölmesindeki kitaplarda istenildiği gibi silme ve yer değiştirme kısımları mevcut. Yer değiştirme basılı tutarak sıralamayı değiştirebilirç
+  Silme için ise Slidable widget kullandım bundan ötürü sola doğru kaydırmanız yeterli olacaktır. İstenilene ek olarak View değiştirme özelliği ile iki farklı 
+  Listeleme tipi görebilirsiniz. Request işlemlerinde Bloc, Request içermeyen işlemlerde Cubit yapılarından faydalanıldı. State değişimi olmayan hiçbir widget
+  Stateful tanımlanmadı. FakerApiden gelen dataların image requestleri kendi url'i içerisinde Date.now() js komutu ile özelleştirildiği için listeleme esnasında
+  url kullanılarak kartların yeniden listelenmesinde ben de aynı yapıyı kullanmak zorunda kaldım(Yoksa hep aynı fotoğraf gelecekti-Response değerleri hepsinin aynı-).
+  Bundan ötürü liste kartlarının yeniden yüklenmesi esnasında DateTime.now değiştiği için fotoğraflar değişecektir ki zaten her response farklı data içeriyor.
+  
+  Web Renderer:
+  Uygulamayı web ortamında çalıştırmak için Flutterın html renderını kullanabilirsiniz.
+  flutter run -d chrome --web-renderer html
+  CanvasKit de renderer olarak kullanılabilir. Bu rendererlar olmadan uygulama web tarafında doğrudan Build/Run olmayacaktır.
+  
+  Responsivity:
+  Uygulama responsive design edildi. Web tarafında responsive oranları Mobil tarafa göre çok farklı olduğundan ötürü web için özel koşullar ile yazıldı.
+  
+  SkSl ile Shader warm-up yapıldı. Json çıktısı proje klasöründe bulunmaktadır. Bunun dışında apk çıktısı olarak SkSl json çıktısı ile bir apk (Release) çıktısı da
+  build klasörünün içindedir.
+  
+İlginiz için teşekkürler.
+
+    - Veli Kaan Çetinel
