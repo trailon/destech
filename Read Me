@@ -1,3 +1,29 @@
+Hello,
+  In the project, there are deletion and replacement parts in the books in the favorites section as desired. You can change the order by holding down the swap.
+  For deletion, I used Slidable widget, so it will be enough to swipe to the left. In addition to the desired one, with the View changing feature, two different
+  You can see the listing type. Bloc structures were used in Request transactions, and Cubit structures were used in transactions that did not contain Request. No widget without state change
+  Stateful is not defined. Since the image requests of the data coming from FakerApi are customized with the Date.now() js command in its own url, it is during listing.
+  I had to use the same structure in relisting the cards using the url (Otherwise it would always be the same photo-the Response values ​​are all the same-).
+  Therefore, as DateTime.now changes during the reloading of the list cards, the photos will change, and each response already contains different data.
+  
+  WebRenderer:
+  You can use Flutter's html rendering to run the application on the web.
+  flutter run -d chrome --web-renderer html
+  CanvasKit can also be used as a renderer. Without these renderers the application will not Build/Run directly on the web side.
+  
+  Responsivity:
+  The application has been responsively designed. Since the responsive rates on the web side are very different compared to the mobile side, it was written with special conditions for the web.
+  
+  Shader warm-up was done with SkSl. The json output is located in the project folder. Apart from this, there is also an apk (Release) output with SkSl json output as apk output.
+  It is in the build folder.
+  
+Thank you for your interest.
+
+    - Veli Kaan Cetinel
+
+Flutter 3.0.1 Used
+It is using a Version Management System (fvm), if the fvm file is included, it is its config file.
+
 Merhabalar,
   Projede favoriler bölmesindeki kitaplarda istenildiği gibi silme ve yer değiştirme kısımları mevcut. Yer değiştirme basılı tutarak sıralamayı değiştirebilirç
   Silme için ise Slidable widget kullandım bundan ötürü sola doğru kaydırmanız yeterli olacaktır. İstenilene ek olarak View değiştirme özelliği ile iki farklı 
